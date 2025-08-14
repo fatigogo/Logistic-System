@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistics Company</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+  <!-- AOS Animation CSS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* Parallax Road Hero Section */
+    .parallax {
+      background-image: url('https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg');
+      min-height: 90vh;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Search overlay styling */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1050;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-overlay input {
+      width: 60%;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+
+      <!-- Navbar -->
+  <header class="fixed w-full bg-white shadow z-50">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <!-- Logo -->
+    <a href="#" class="text-2xl font-bold text-blue-700">Logistics 🚚</a> 
+      <ul class="hidden md:flex space-x-6 font-medium">
+        <li><a href="index.html" class="hover:text-blue-700">Home</a></li>
+        <li><a href="services.html" class="hover:text-blue-700">Services</a></li>
+        <li><a href="about.html" class="hover:text-blue-700">About</a></li>
+        <li><a href="tracking.html" class="hover:text-blue-700">Tracking</a></li>
+        <li><a href="contact.html" class="hover:text-blue-700">Contact</a></li>
+                <!-- Search icon -->
+        <li class="nav-item ms-3">
+          <button id="searchBtn" class="text-gray-600 hover:text-blue-700">
+            <i class="fas fa-search text-lg"></i>
+        </button>
+        </li>
+
+        <!-- Cart icon -->
+               <!-- Cart dropdown -->
+        <li class="nav-item dropdown ms-2">
+          <a class="nav-link position-relative dropdown-toggle" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown">
+            <button id="cartBtn" class="text-gray-600 hover:text-blue-700">
+          <i class="fas fa-shopping-cart text-lg"></i>
+        </button>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+          0
+        </span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cartDropdown">
+            <li><a class="dropdown-item" href="#">First Shipment - Pending</a></li>
+            <li><a class="dropdown-item" href="#">Second Shipment - In Transit</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center" href="#">View All</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <!-- Hero Section -->
+  <section class="parallax">
+    <div class="overlay text-center text-white">
+      <div data-aos="zoom-in" data-aos-duration="1200">
+        <h1 class="text-5xl font-bold mb-4">Reliable Logistics Solutions</h1>
+        <p class="text-lg mb-6">We deliver goods across the nation with speed and safety</p>
+        <a href="#quote" class="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded font-semibold">Request a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tracking" class="py-20 bg-gray-100">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h2 class="text-4xl font-bold mb-6">Track Your Shipment</h2>
+    <p class="mb-10 text-gray-600">Enter your tracking ID to see the latest status of your shipment.</p>
+
+    <form id="trackingForm" class="flex flex-col md:flex-row gap-4 justify-center">
+      <input 
+        type="text" 
+        id="trackingId" 
+        name="trackingId" 
+        placeholder="Enter Tracking ID" 
+        class="border border-gray-300 px-4 py-3 rounded-lg w-full md:w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        required
+      >
+      <button 
+        type="submit" 
+        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+      >
+        Track Now
+      </button>
+    </form>
+
+    <div id="trackingResult" class="mt-8 hidden">
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h3 class="text-xl font-semibold mb-2">Shipment Status:</h3>
+        <p id="statusText" class="text-gray-700"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- About Us -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+      <div data-aos="fade-right" data-aos-duration="1000">
+        <h2 class="text-3xl font-bold mb-4">About Us</h2>
+        <p class="mb-4">
+          We are a trusted logistics provider offering freight, transport, and supply chain solutions
+          to businesses of all sizes. Our team ensures every shipment reaches its destination safely and on time.
+        </p>
+        <ul class="space-y-2 text-gray-700">
+          <li>✅ Nationwide coverage</li>
+          <li>✅ Fast delivery</li>
+          <li>✅ Affordable rates</li>
+        </ul>
+      </div>
+      <div data-aos="fade-left" data-aos-duration="1000">
+        <img src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg" 
+             alt="Logistics Road" class="rounded-lg shadow-lg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-12" data-aos="fade-up">Our Services</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        
+        <!-- Service 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg" data-aos="flip-left" data-aos-duration="1000">
+          <img src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/000000/external-truck-logistics-flaticons-lineal-color-flat-icons.png" alt="Freight Shipping" class="mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-2">Freight Shipping</h3>
+          <p class="text-gray-600">We transport large quantities of goods across long distances with reliability and safety.</p>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="200">
+            <img src="https://img.icons8.com/color/96/delivery.png" alt="Express Delivery" class="mx-auto mb-4">
+            <h3 class="text-xl font-semibold mb-2">Express Delivery</h3>
+            <p class="text-gray-600">Get your shipments delivered in record time with our priority service options.</p>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="400">
+          <img src="https://img.icons8.com/color/64/000000/warehouse.png" alt="Warehousing" class="mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-2">Warehousing</h3>
+          <p class="text-gray-600">Secure storage facilities for goods awaiting transport or distribution.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Request a Quote Section -->
+<section class="relative bg-fixed bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1507537509458-b8312d35a233?auto=format&fit=crop&w=1470&q=80');">
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+  <div class="relative container mx-auto px-6 py-16 text-white" data-aos="fade-up" data-aos-duration="1000">
+    <h2 class="text-3xl font-bold text-center mb-6">Request a Quote</h2>
+    <p class="text-center max-w-2xl mx-auto mb-10">
+      Tell us about your shipment and we’ll get back to you with a competitive quote.
+    </p>
+
+    <!-- Quote Form -->
+    <form class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <input type="text" placeholder="Full Name" class="p-3 rounded bg-white text-gray-900" required>
+      <input type="email" placeholder="Email Address" class="p-3 rounded bg-white text-gray-900" required>
+      <input type="tel" placeholder="Phone Number" class="p-3 rounded bg-white text-gray-900" required>
+      <select class="p-3 rounded bg-white text-gray-900" required>
+        <option value="">Select Service</option>
+        <option value="freight">Freight Shipping</option>
+        <option value="express">Express Delivery</option>
+        <option value="warehousing">Warehousing</option>
+      </select>
+      <textarea placeholder="Shipment Details" class="p-3 rounded bg-white text-gray-900 md:col-span-2" rows="4"></textarea>
+      <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 transition font-semibold py-3 rounded md:col-span-2">
+        Get My Quote
+      </button>
+    </form>
+  </div>
+</section>
+
+<section id="contact" class="py-16 bg-gray-900 text-white">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-4xl font-bold text-center mb-12">Get in Touch</h2>
+    <div class="grid md:grid-cols-2 gap-10">
+
+      <!-- Contact Info -->
+      <div class="space-y-6">
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-600 p-4 rounded-full animate-bounce">
+            🚚
+          </div>
+          <div>
+            <h4 class="font-semibold">Address</h4>
+            <p>123 Logistics Street, City, Country</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-600 p-4 rounded-full animate-pulse">
+            📞
+          </div>
+          <div>
+            <h4 class="font-semibold">Phone</h4>
+            <p>+234 800 000 0000</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-600 p-4 rounded-full animate-bounce">
+            📧
+          </div>
+          <div>
+            <h4 class="font-semibold">Email</h4>
+            <p>info@logisticscompany.com</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <form action="send-contact.php" method="POST" class="bg-white text-gray-900 p-8 rounded-lg shadow-lg space-y-6">
+        <div>
+          <label class="block font-semibold">Name</label>
+          <input type="text" name="name" required class="w-full border rounded px-4 py-2 focus:ring focus:ring-blue-300">
+        </div>
+        <div>
+          <label class="block font-semibold">Email</label>
+          <input type="email" name="email" required class="w-full border rounded px-4 py-2 focus:ring focus:ring-blue-300">
+        </div>
+        <div>
+          <label class="block font-semibold">Message</label>
+          <textarea name="message" required class="w-full border rounded px-4 py-2 focus:ring focus:ring-blue-300"></textarea>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-6 text-center">
+    <p>&copy; 2025 LogisticsPro. All rights reserved.</p>
+  </footer>
+
+  <!-- Font Awesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+   <!-- Bootstrap JS  -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <script>
+document.getElementById('trackingForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const trackingId = document.getElementById('trackingId').value.trim();
+  const trackingResult = document.getElementById('trackingResult');
+  const statusText = document.getElementById('statusText');
+
+  if (trackingId.length < 5) {
+    alert('Please enter a valid tracking ID.');
+    return;
+  }
+
+  // Simulated responses
+  const statuses = [
+    "📦 Shipment in Transit – Estimated delivery in 2 days",
+    "✅ Delivered successfully",
+    "🛳 Awaiting Departure from Port",
+    "🚚 Out for Delivery",
+    "⏳ Customs Clearance in Progress"
+  ];
+
+  // Random status for demo purposes
+  statusText.textContent = statuses[Math.floor(Math.random() * statuses.length)];
+  
+  trackingResult.classList.remove('hidden');
+});
+</script>
+<!-- Search Overlay -->
+<div id="searchOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2 relative">
+    <!-- Close Button -->
+    <button id="closeSearch" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+      <i class="fas fa-times text-xl"></i>
+    </button>
+
+    <!-- Search Form -->
+    <h2 class="text-xl font-semibold mb-4 text-center">Search</h2>
+    <form>
+      <div class="flex">
+        <input type="text" placeholder="Search here..." class="flex-1 border border-gray-300 p-2 rounded-l-lg focus:outline-none focus:border-blue-500">
+        <button type="submit" class="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const searchBtn = document.getElementById('searchBtn');
+  const searchOverlay = document.getElementById('searchOverlay');
+  const closeSearch = document.getElementById('closeSearch');
+
+  // Open Search
+  searchBtn.addEventListener('click', () => {
+    searchOverlay.classList.remove('hidden');
+  });
+
+  // Close Search
+  closeSearch.addEventListener('click', () => {
+    searchOverlay.classList.add('hidden');
+  });
+
+  // Close when clicking outside the search box
+  searchOverlay.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) {
+      searchOverlay.classList.add('hidden');
+    }
+  });
+</script>
+
+<!-- Cart Overlay -->
+<div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/3 relative">
+    <!-- Close Button -->
+    <button id="closeCart" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+      <i class="fas fa-times text-xl"></i>
+    </button>
+
+    <!-- Cart Content -->
+    <h2 class="text-xl font-semibold mb-4">Your Cart</h2>
+    <ul id="cartItems" class="space-y-4">
+      <li class="flex justify-between border-b pb-2">
+        <span>Express Delivery</span>
+        <span class="text-blue-600 font-semibold">$120</span>
+      </li>
+      <li class="flex justify-between border-b pb-2">
+        <span>Overnight Freight</span>
+        <span class="text-blue-600 font-semibold">$200</span>
+      </li>
+    </ul>
+    <div class="mt-4 flex justify-between font-bold">
+      <span>Total:</span>
+      <span>$320</span>
+    </div>
+    <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+      Checkout
+    </button>
+  </div>
+</div>
+
+
+</body>
+</html>
